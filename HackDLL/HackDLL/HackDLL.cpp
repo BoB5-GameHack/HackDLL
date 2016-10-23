@@ -3,4 +3,9 @@
 
 #include "stdafx.h"
 
+int CreateConsoleIO() {
+	AllocConsole();
+	freopen("CONOUT$", "w", stdout);
 
+	return 0;
+}

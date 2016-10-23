@@ -26,14 +26,11 @@ typedef int (WINAPI *pSend)(
 	);
 
 int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
-	FILE *fp = fopen("D:\\packets.txt", "a");
-	
 	for (int i = 0; i < len; ++i) {
-		fprintf(fp, "%02X ", (unsigned char) buf[i]);
+		printf("%02X ", (unsigned char) buf[i]);
 	}
-	fprintf(fp, "\n\n");
+	printf("\n\n");
 
-	fclose(fp);
 
 	BYTE code[] = { 0x48, 0x89, 0x5C, 0x24, 0x08 };
 	WriteMemory(addrSend, code, sizeof(code));
