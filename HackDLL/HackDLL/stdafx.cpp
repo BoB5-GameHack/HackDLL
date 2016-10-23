@@ -6,3 +6,13 @@
 
 // TODO: 필요한 추가 헤더는
 // 이 파일이 아닌 STDAFX.H에서 참조합니다.
+
+int WriteMemory(LPVOID lpAddr, LPVOID data, SIZE_T len) {
+	DWORD old;
+
+	VirtualProtect(lpAddr, len, PAGE_EXECUTE_READWRITE, &old);
+	memcpy(lpAddr, data, len);
+	VirtualProtect(lpAddr, len, old, NULL);
+
+	return 0;
+}

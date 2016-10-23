@@ -1,5 +1,6 @@
 // dllmain.cpp: DLL 응용 프로그램의 진입점을 정의합니다.
 #include "stdafx.h"
+#include "SendHook.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -9,6 +10,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		MessageBoxW(NULL, L"Attached", L"HackDLL", MB_OK);
+		PatchSend();
+		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
