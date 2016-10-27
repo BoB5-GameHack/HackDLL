@@ -1,3 +1,3 @@
 #pragma once
 
-int HookPlainPacket();
+int WINAPI HookPlainPacket();

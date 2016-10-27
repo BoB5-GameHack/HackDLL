@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <TlHelp32.h>
 
 int CreateConsoleIO() {
 	AllocConsole();
