@@ -30,6 +30,12 @@
     <ClInclude Include="HackDLL.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MemoryScanner.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlainPacketHook.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +48,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SendHook.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryScanner.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlainPacketHook.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "SendHook.h"
 
-#include <WinSock2.h>
-
 LPVOID addrSend = NULL;
 BYTE jmper[5] = { 0xE9, };
 
@@ -26,6 +24,7 @@ typedef int (WINAPI *pSend)(
 	);
 
 int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
+	printf("[*] WS2_32.send : ");
 	for (int i = 0; i < len; ++i) {
 		printf("%02X ", (unsigned char) buf[i]);
 	}
