@@ -62,6 +62,10 @@ int PacketDumper(LPVOID packetAddr, SIZE_T size) {
 	for (int i = 0; i < size; ++i) {
 		printf("%02X ", data[i]);
 	}
+	printf("\n[*] dump : ");
+	for (int i = 0; i < size; ++i) {
+		printf("%c", data[i]);
+	}
 	printf("\n");
 
 	return 0;
