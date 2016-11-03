@@ -10,6 +10,8 @@
 #define WIN32_LEAN_AND_MEAN             // 거의 사용되지 않는 내용은 Windows 헤더에서 제외합니다.
 // Windows 헤더 파일:
 #include <stdio.h>
+#include <io.h>
+
 #include <windows.h>
 #include <WinSock2.h>
 #include <TlHelp32.h>
