@@ -19,12 +19,14 @@ int WINAPI HookPlainPacket() {
 	MemoryScan(pattern, sizeof(pattern), list);
 
 	lpEncryptFunctionAddr = (LPVOID)((SIZE_T)list.front() + 4);
+	printf("Encryption : %p\n", lpEncryptFunctionAddr);
 
 	list.clear();
 	BYTE pattern2[] = { 0x48, 0x8B, 0x74, 0x24, 0x50, 0x48, 0x8B, 0xC5, 0x48, 0x8B, 0x6C, 0x24, 0x48, 0x48, 0x83, 0xC4, 0x30, 0x5F, 0xC3, 0xCC };
 	MemoryScan(pattern2, sizeof(pattern2), list);
 
-	lpMakePacketFunctionAddr = (LPVOID)((SIZE_T)list.at(4) + 5);
+	lpMakePacketFunctionAddr = (LPVOID)((SIZE_T)list.at(3) + 5);
+	printf("Creation : %p\n", lpMakePacketFunctionAddr);
 
 	if (AddVectoredExceptionHandler(1, (PVECTORED_EXCEPTION_HANDLER)HookingHandler) == NULL) {
 		printf("[*] HookPlainText : Couldn't add vectored exception handler..\n");
@@ -65,7 +67,7 @@ long WINAPI HookingHandler(PEXCEPTION_POINTERS ExceptionInfo) {
 		pContext->Rip = (DWORD64)lpMakePacketFunctionAddr + 3;
 		pContext->Rax = pContext->Rbp;
 
-		printf("test");
+		printf("asdf\n");
 		if (!access("D:\\packets.dat", 0)) {
 			PacketReplacer(*(unsigned char **)pContext->Rbp, (int *)&pContext->R8); //[Rbp] = PacketAddr, R8 = PacketLength
 		}
