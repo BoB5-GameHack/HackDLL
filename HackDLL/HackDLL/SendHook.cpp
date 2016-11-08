@@ -40,7 +40,7 @@ int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
 	BYTE code[] = { 0x48, 0x89, 0x5C, 0x24, 0x08 };
 	WriteMemory(addrSend, code, sizeof(code));
 	
-	int ret = ((pSend)addrSend)(s, buf, len, flags);
+	int ret = ((pSend)addrSend)(s, buf, len, flags);	
 	WriteMemory(addrSend, jmper, sizeof(jmper));
 	
 	isPlainPacket = true;
