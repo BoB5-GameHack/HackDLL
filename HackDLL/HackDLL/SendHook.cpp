@@ -4,7 +4,7 @@
 bool isPlainPacket = true;
 
 LPVOID addrSend = NULL;
-BYTE jmper[5] = { 0xE9, };
+BYTE sendJmper[5] = { 0xE9, };
 
 int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags);
 
@@ -12,8 +12,10 @@ int PatchSend() {
 	HMODULE hMod = LoadLibraryW(L"WS2_32.dll");
 	addrSend = GetProcAddress(hMod, "send");
 
-	*(LPDWORD)(jmper + 1) = (LPBYTE)SendHook - (LPBYTE)addrSend - 5;
-	WriteMemory(addrSend, jmper, sizeof(jmper));
+	printf("[*] send : %p\n", addrSend);
+
+	*(LPDWORD)(sendJmper + 1) = (LPBYTE)SendHook - (LPBYTE)addrSend - 5;
+	WriteMemory(addrSend, sendJmper, sizeof(sendJmper));
 	
 	return 0;
 }
@@ -41,7 +43,7 @@ int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
 	WriteMemory(addrSend, code, sizeof(code));
 	
 	int ret = ((pSend)addrSend)(s, buf, len, flags);	
-	WriteMemory(addrSend, jmper, sizeof(jmper));
+	WriteMemory(addrSend, sendJmper, sizeof(sendJmper));
 	
 	isPlainPacket = true;
 	return ret;

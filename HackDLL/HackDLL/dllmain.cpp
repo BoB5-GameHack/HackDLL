@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "HackDLL.h"
 #include "SendHook.h"
+#include "RecvHook.h"
 #include "PlainPacketHook.h"
 
 BOOL APIENTRY DllMain (HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
@@ -11,6 +12,8 @@ BOOL APIENTRY DllMain (HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReser
 		CreateConsoleIO();
 
 		PatchSend();
+		PatchRecv();
+
 		HookPlainPacket();
 		break;
 	case DLL_THREAD_ATTACH:

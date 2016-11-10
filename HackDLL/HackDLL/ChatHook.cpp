@@ -38,6 +38,23 @@ int ChatHook(unsigned char *packet) {
 
 		memcpy(packet, chat, *chat);
 	}
+	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"overflow_test")) {
+		SIZE_T origlen = wcslen((WCHAR *)(packet + CHAT_DATA_INDEX));
+		SIZE_T newlen = 4000;
+
+		char chat[8192] = { 0, };
+		memcpy(chat, packet, CHAT_DATA_INDEX);
+
+		for (int i = 0; i < newlen; ++i) {
+			chat[CHAT_DATA_INDEX + i] = 'a';
+		}
+
+		*ptr = '<';
+		memcpy(chat + CHAT_DATA_INDEX + newlen, ptr, *packet - CHAT_DATA_INDEX - origlen * 2);
+		*((PWORD)&chat) = *packet - origlen * 2 + newlen;
+
+		memcpy(packet, chat, *chat);
+	}
 
 	return 0;
 }

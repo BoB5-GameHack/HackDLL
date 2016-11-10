@@ -142,6 +142,7 @@
     <ClInclude Include="HackDLL.h" />
     <ClInclude Include="MemoryScanner.h" />
     <ClInclude Include="PlainPacketHook.h" />
+    <ClInclude Include="RecvHook.h" />
     <ClInclude Include="SendHook.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="HackDLL.cpp" />
     <ClCompile Include="MemoryScanner.cpp" />
     <ClCompile Include="PlainPacketHook.cpp" />
+    <ClCompile Include="RecvHook.cpp" />
     <ClCompile Include="SendHook.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
