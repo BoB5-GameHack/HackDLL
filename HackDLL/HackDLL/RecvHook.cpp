@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "RecvHook.h"
 
+bool isPlainRecvPacket = true;
+
 LPVOID addrRecv = NULL;
 BYTE recvJmper[5] = { 0xE9, };
 
@@ -26,19 +28,22 @@ typedef int (WINAPI *pRecv)(
 	);
 
 int WINAPI RecvHook(SOCKET s, const char *buf, int len, int flags) {
-	int rlen = *buf;
-
-	printf("[*] WSOCK32.recv : ");
-	for (int i = 0; i < rlen; ++i) {
-		printf("%02X ", (unsigned char)buf[i]);
-	}
-	printf("\n\n");
-
 	BYTE code[] = { 0x4C, 0x8B, 0xDC, 0x48, 0x83 };
 	WriteMemory(addrRecv, code, sizeof(code));
 
 	int ret = ((pRecv)addrRecv)(s, buf, len, flags);
 	WriteMemory(addrRecv, recvJmper, sizeof(recvJmper));
+
+	if (isPlainRecvPacket) {
+		printf("[*] WSOCK32.recv : ");
+		for (int i = 0; i < ret; ++i) {
+			printf("%02X ", (unsigned char)buf[i]);
+		}
+		printf("\n\n");
+	}
+	else {
+		printf("[*] recved\n\n");
+	}
 
 	return ret;
 }

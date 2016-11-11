@@ -30,13 +30,13 @@
     <ClInclude Include="MemoryScanner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlainPacketHook.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ChatHook.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="RecvHook.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlainPacketHook.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,13 +56,13 @@
     <ClCompile Include="MemoryScanner.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlainPacketHook.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="ChatHook.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="RecvHook.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlainPacketHook.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

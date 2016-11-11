@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SendHook.h"
 
-bool isPlainPacket = true;
+bool isPlainSendPacket = true;
 
 LPVOID addrSend = NULL;
 BYTE sendJmper[5] = { 0xE9, };
@@ -28,7 +28,7 @@ typedef int (WINAPI *pSend)(
 	);
 
 int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
-	if (isPlainPacket) {
+	if (isPlainSendPacket) {
 		printf("[*] WS2_32.send : ");
 		for (int i = 0; i < len; ++i) {
 			printf("%02X ", (unsigned char)buf[i]);
@@ -45,6 +45,6 @@ int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
 	int ret = ((pSend)addrSend)(s, buf, len, flags);	
 	WriteMemory(addrSend, sendJmper, sizeof(sendJmper));
 	
-	isPlainPacket = true;
+	isPlainSendPacket = true;
 	return ret;
 }

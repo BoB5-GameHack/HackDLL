@@ -1,5 +1,5 @@
 #pragma once
 
-extern bool isPlainPacket;
+extern bool isPlainSendPacket;
 
 int PatchSend();
