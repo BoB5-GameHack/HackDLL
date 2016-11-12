@@ -3,6 +3,8 @@
 
 #define CHAT_DATA_INDEX 54
 
+int EntityReplacer(WCHAR *str, WCHAR *target, WCHAR chr, int len);
+
 bool isHooked = false;
 char filename[1024] = { 0, };
 
@@ -32,7 +34,9 @@ int ChatHook(unsigned char *packet) {
 		memcpy(chat, packet, CHAT_DATA_INDEX);
 		memcpy(chat + CHAT_DATA_INDEX, ptrb + 1, newlen * 2);
 
-		*ptr = '<';
+		newlen = EntityReplacer((WCHAR *)(chat + CHAT_DATA_INDEX), L"&lt;", '<', newlen);
+		newlen = EntityReplacer((WCHAR *)(chat + CHAT_DATA_INDEX), L"&gt;", '>', newlen);
+
 		memcpy(chat + CHAT_DATA_INDEX + newlen * 2, ptr, *packet - CHAT_DATA_INDEX - origlen * 2);
 		*chat = *packet - origlen * 2 + newlen * 2;
 
@@ -104,6 +108,22 @@ int PacketReplacer(unsigned char *data, int *length) {
 	++curSet;
 	if (curSet >= totalSet) {
 		isHooked = false;
+	}
+
+	return len;
+}
+
+int EntityReplacer(WCHAR *str, WCHAR *target, WCHAR chr, int len) {
+	int tarlen = wcslen(target);
+	WCHAR *tmp = wcsstr((WCHAR *)str, target);
+
+	while (tmp) {
+		*tmp = chr;
+		wcscpy(tmp + 1, tmp + tarlen);
+
+		len -= tarlen - 1;
+
+		tmp = wcsstr(tmp + 1, target);
 	}
 
 	return len;

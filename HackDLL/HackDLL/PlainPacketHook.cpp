@@ -49,6 +49,10 @@ int WINAPI HookPlainPacket() {
 	lpMakeChatFunctionAddr = (LPVOID)((SIZE_T)list.front() + 23);
 	printf("[*] Chat : %p\n", lpMakeChatFunctionAddr);
 
+	FILE *fp = fopen("DR_Registers.txt", "wt");
+	fprintf(fp, "%p %p %p %p\n", lpEncryptFunctionAddr, lpDecryptFunctionAddr, lpMakeChatFunctionAddr, lpMakePacketFunctionAddr);
+	fclose(fp);
+
 	if (AddVectoredExceptionHandler(1, (PVECTORED_EXCEPTION_HANDLER)HookingHandler) == NULL) {
 		printf("[*] HookPlainText : Couldn't add vectored exception handler..\n");
 		return 1;
