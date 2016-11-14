@@ -2,6 +2,7 @@
 #include "RecvHook.h"
 
 bool isPlainRecvPacket = true;
+bool isOmitPacket = false;
 
 LPVOID addrRecv = NULL;
 BYTE recvJmper[5] = { 0xE9, };
@@ -41,9 +42,11 @@ int WINAPI RecvHook(SOCKET s, const char *buf, int len, int flags) {
 		}
 		printf("\n\n");
 	}
-	else {
+	else if (!isOmitPacket) {
 		printf("[*] recved\n\n");
 	}
 
+	isPlainRecvPacket = true;
+	isOmitPacket = false;
 	return ret;
 }

@@ -129,6 +129,10 @@ int PacketDumper(unsigned char *packetAddr, SIZE_T size, bool flag) {
 		printf("[%d] plain send : ", ++PacketSendNumber);
 	}
 	else {
+		if (!memcmp(packetAddr, "\x2D\x00\x41\x51", 4)) {
+			isOmitPacket = true;
+			return 0;
+		}
 		printf("[%d] plain recv : ", ++PacketRecvNumber);
 	}
 
