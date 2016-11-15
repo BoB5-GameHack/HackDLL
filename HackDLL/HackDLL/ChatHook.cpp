@@ -30,13 +30,14 @@ int ChatHook(unsigned char *packet) {
 
 		printf("[*] chat modifying : %ls\n", ptrb + 1);
 
-		char chat[1024] = { 0, };
+		unsigned char chat[1024] = { 0, };
 		memcpy(chat, packet, CHAT_DATA_INDEX);
 		memcpy(chat + CHAT_DATA_INDEX, ptrb + 1, newlen * 2);
 
 		newlen = EntityReplacer((WCHAR *)(chat + CHAT_DATA_INDEX), L"&lt;", '<', newlen);
 		newlen = EntityReplacer((WCHAR *)(chat + CHAT_DATA_INDEX), L"&gt;", '>', newlen);
 
+		*ptr = '<';
 		memcpy(chat + CHAT_DATA_INDEX + newlen * 2, ptr, *packet - CHAT_DATA_INDEX - origlen * 2);
 		*chat = *packet - origlen * 2 + newlen * 2;
 
@@ -48,7 +49,7 @@ int ChatHook(unsigned char *packet) {
 		SIZE_T origlen = wcslen((WCHAR *)(packet + CHAT_DATA_INDEX));
 		SIZE_T newlen = _wtoi(ptrb + 1);
 
-		char chat[8192] = { 0, };
+		unsigned char chat[8192] = { 0, };
 		memcpy(chat, packet, CHAT_DATA_INDEX);
 
 		for (int i = 0; i < newlen; ++i) {
