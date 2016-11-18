@@ -46,3 +46,25 @@ DWORD GetMainThreadId() {
 	CloseHandle(hSnapshot);
 	return dwMainThreadID;
 }
+
+BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
+	int length = GetWindowTextLengthW(hWnd);
+	if (0 == length) return TRUE;
+
+	PWCHAR buffer = new WCHAR[length + 1];
+	GetWindowText(hWnd, buffer, length + 1);
+
+	if (wcsstr(buffer, L"S1 Game")) {
+		*((HWND *)lParam) = hWnd;
+	}
+
+	delete[] buffer;
+	return TRUE;
+}
+
+HWND GetGameWindow() {
+	HWND hMainWindows = NULL;
+	EnumWindows(EnumWindowsProc, (LPARAM)&hMainWindows);
+
+	return hMainWindows;
+}

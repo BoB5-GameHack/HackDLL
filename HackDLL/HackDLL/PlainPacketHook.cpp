@@ -7,18 +7,15 @@
 #include "RecvHook.h"
 #include "ChatHook.h"
 
+#include "Packets.h"
 #include "PlainPacketHook.h"
 
-int PacketDumper(unsigned char *packetAddr, SIZE_T size, bool flag);
 long WINAPI HookingHandler(PEXCEPTION_POINTERS ExceptionInfo);
 
 LPVOID lpEncryptFunctionAddr = NULL;
 LPVOID lpDecryptFunctionAddr = NULL;
 LPVOID lpMakePacketFunctionAddr = NULL;
 LPVOID lpMakeChatFunctionAddr = NULL;
-
-DWORD64 PacketSendNumber = 0;
-DWORD64 PacketRecvNumber = 0;
 
 int WINAPI HookPlainPacket() {
 	std::vector<LPVOID> list;
@@ -122,28 +119,4 @@ long WINAPI HookingHandler(PEXCEPTION_POINTERS ExceptionInfo) {
 	else {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
-}
-
-int PacketDumper(unsigned char *packetAddr, SIZE_T size, bool flag) {
-	if (flag) {
-		printf("[%d] plain send : ", ++PacketSendNumber);
-	}
-	else {
-		if (!memcmp(packetAddr, "\x2D\x00\x41\x51", 4)) {
-			isOmitPacket = true;
-			return 0;
-		}
-		printf("[%d] plain recv : ", ++PacketRecvNumber);
-	}
-
-	for (int i = 0; i < size; ++i) {
-		printf("%02X ", packetAddr[i]);
-	}
-	printf("\n[*] dump : ");
-	for (int i = 0; i < size; ++i) {
-		printf("%c", packetAddr[i]);
-	}
-	printf("\n");
-
-	return 0;
 }

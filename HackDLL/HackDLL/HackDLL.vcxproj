@@ -141,6 +141,7 @@
     <ClInclude Include="ChatHook.h" />
     <ClInclude Include="HackDLL.h" />
     <ClInclude Include="MemoryScanner.h" />
+    <ClInclude Include="Packets.h" />
     <ClInclude Include="PlainPacketHook.h" />
     <ClInclude Include="RecvHook.h" />
     <ClInclude Include="SendHook.h" />
@@ -165,6 +166,7 @@
     </ClCompile>
     <ClCompile Include="HackDLL.cpp" />
     <ClCompile Include="MemoryScanner.cpp" />
+    <ClCompile Include="Packets.cpp" />
     <ClCompile Include="PlainPacketHook.cpp" />
     <ClCompile Include="RecvHook.cpp" />
     <ClCompile Include="SendHook.cpp" />

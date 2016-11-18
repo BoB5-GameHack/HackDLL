@@ -2,3 +2,4 @@
 
 int CreateConsoleIO();
 DWORD GetMainThreadId();
+HWND GetGameWindow();

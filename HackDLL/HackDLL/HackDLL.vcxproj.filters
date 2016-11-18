@@ -39,6 +39,9 @@
     <ClInclude Include="PlainPacketHook.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Packets.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -63,6 +66,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlainPacketHook.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Packets.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
