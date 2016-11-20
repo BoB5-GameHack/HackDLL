@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 
+#include "SendHook.h"
+#include "RecvHook.h"
+
 int CreateConsoleIO() {
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);

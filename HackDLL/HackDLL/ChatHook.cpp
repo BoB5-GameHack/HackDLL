@@ -1,11 +1,7 @@
 #include "stdafx.h"
 #include "HackDLL.h"
-#include "ChatHook.h"
-
 #include "Packets.h"
-#include "SendHook.h"
-#include "RecvHook.h"
-
+#include "ChatHook.h"
 
 #define CHAT_DATA_INDEX 54
 
@@ -73,34 +69,6 @@ int ChatHook(unsigned char *packet) {
 		*chat = *packet - origlen * 2 + newlen * 2;
 
 		memcpy(packet, chat, *chat);
-	}
-	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"unload")) {
-		printf("[*] unloading library..\n");
-
-		CONTEXT ctx;
-		memset(&ctx, 0, sizeof(CONTEXT));
-		ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-
-		ctx.Dr0 = 0;
-		ctx.Dr1 = 0;
-		ctx.Dr2 = 0;
-		ctx.Dr3 = 0;
-
-		ctx.Dr7 = 0;
-
-		HANDLE hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, GetMainThreadId());
-
-		SetThreadContext(hThread, &ctx);
-		CloseHandle(hThread);
-
-		BYTE code[] = { 0x4C, 0x8B, 0xDC, 0x48, 0x83 };
-		WriteMemory(addrRecv, code, sizeof(code));
-
-		BYTE code2[] = { 0x48, 0x89, 0x5C, 0x24, 0x08 };
-		WriteMemory(addrSend, code2, sizeof(code2));
-
-		HMODULE hCurrentLibrary = GetModuleHandleW(L"HackDLL.dll");
-		FreeLibrary(hCurrentLibrary);
 	}
 	else {
 		*ptr = '<';
