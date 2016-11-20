@@ -96,22 +96,29 @@ int EntityReplacer(WCHAR *str, WCHAR *target, WCHAR chr, int len) {
 	return len;
 }
 
-int PlayMacro() {
-	HWND GameWindow = GetGameWindow();
+int PlayMacro(int *miliSeconds) {
+	int ms = *miliSeconds;
+	UINT MappedKey_Return = MapVirtualKeyW(VK_RETURN, MAPVK_VK_TO_VSC);
+	UINT MappedKey_A = MapVirtualKeyW(0x41, MAPVK_VK_TO_VSC);
+
+	printf("[*] plz input 'a' to start..\n");
 
 	while (isPlaying) {
-		SetForegroundWindow(GameWindow);
+		PostMessageW(GameWindow, WM_KEYDOWN, VK_RETURN, MappedKey_Return);
+		Sleep(100);
+		PostMessageW(GameWindow, WM_KEYUP, VK_RETURN, MappedKey_Return);
+		Sleep(100);
 
-		keybd_event(VK_RETURN, NULL, NULL, NULL);
-		keybd_event(VK_RETURN, NULL, KEYEVENTF_KEYUP, NULL);
+		PostMessageW(GameWindow, WM_KEYDOWN, 0x41, MappedKey_A);
+		Sleep(100);
+		PostMessageW(GameWindow, WM_KEYUP, 0x41, MappedKey_A);
+		Sleep(100);
 
-		keybd_event(VkKeyScanW('A'), NULL, NULL, NULL);
-		keybd_event(VkKeyScanW('A'), NULL, KEYEVENTF_KEYUP, NULL);
+		PostMessageW(GameWindow, WM_KEYDOWN, VK_RETURN, MappedKey_Return);
+		Sleep(100);
+		PostMessageW(GameWindow, WM_KEYUP, VK_RETURN, MappedKey_Return);
 
-		keybd_event(VK_RETURN, NULL, NULL, NULL);
-		keybd_event(VK_RETURN, NULL, KEYEVENTF_KEYUP, NULL);
-
-		Sleep(1000);
+		Sleep(ms);
 	}
 	
 	return 0;

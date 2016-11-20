@@ -68,3 +68,10 @@ HWND GetGameWindow() {
 
 	return hMainWindows;
 }
+
+HWND GameWindowsInfo() {
+	HWND wnd = GetGameWindow();
+	printf("[*] Game Windows : %d\n", wnd);
+
+	return wnd;
+}
