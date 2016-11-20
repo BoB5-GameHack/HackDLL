@@ -40,8 +40,18 @@ BYTE **packets;
 int curSet = 0;
 int totalSet = 0;
 
+int spec = 0;
+
 int PacketReplacer(unsigned char *data, int *length) {
 	if (curSet >= totalSet) {
+		if (totalSet) {
+			while (totalSet) {
+				delete[] packets[--totalSet];
+			}
+
+			delete[] packets;
+		}
+
 		curSet = 0;
 		totalSet = 0;
 
@@ -51,22 +61,44 @@ int PacketReplacer(unsigned char *data, int *length) {
 		printf("[*] totalSet : %d..\n", totalSet);
 		packets = new PBYTE[totalSet];
 
-		for (int i = 0; i < totalSet; ++i) {
-			BYTE size = 0;
-			fscanf(fp, "%02X", &size);
+		if (totalSet == 1) {
+			int cnt = -1;
+			PBYTE pca = packets[0] = new BYTE[65535];
+			
+			while (!feof(fp)) {
+				fscanf(fp, "%02X", &pca[++cnt]);
+			}
 
-			PBYTE pca = packets[i] = new BYTE[size];
-			pca[0] = size;
+			spec = cnt + 1;
+		}
+		else {
+			for (int i = 0; i < totalSet; ++i) {
+				BYTE _size[2] = { 0, };
+				fscanf(fp, "%02X %02X", &_size[0], &_size[1]);
 
-			for (int j = 1; j < size; ++j) {
-				fscanf(fp, "%02X", &pca[j]);
+				WORD size = *((PWORD)_size);
+
+				PBYTE pca = packets[i] = new BYTE[size];
+				pca[0] = _size[0];
+				pca[1] = _size[1];
+
+				for (int j = 2; j < size; ++j) {
+					fscanf(fp, "%02X", &pca[j]);
+				}
 			}
 		}
 
 		fclose(fp);
 	}
 
-	BYTE len = packets[curSet][0];
+	WORD len = 0;
+	
+	if (spec) {
+		len = spec;
+	}
+	else {
+		len = ((PWORD)(packets[curSet]))[0];
+	}
 	printf("[%d] CurSet (length : %d) Replacing..\n", curSet, len);
 
 	memcpy(data, packets[curSet], len);
@@ -77,6 +109,7 @@ int PacketReplacer(unsigned char *data, int *length) {
 		isHooked = false;
 	}
 
+	spec = 0;
 	return len;
 }
 

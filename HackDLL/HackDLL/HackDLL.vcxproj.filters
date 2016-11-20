@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Hook">
+      <UniqueIdentifier>{a3a1bdd2-be4b-48eb-b0e6-b9a122c5930f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils">
+      <UniqueIdentifier>{6691fccd-8496-4c3b-aa66-f06d05f6a9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Hook">
+      <UniqueIdentifier>{3a23bf13-cf2e-4a36-8179-86d0b9e94083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Utils">
+      <UniqueIdentifier>{798c9402-9c72-4088-a099-f59747523906}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -21,26 +33,26 @@
     <ClInclude Include="targetver.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SendHook.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="HackDLL.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryScanner.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ChatHook.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="RecvHook.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Hook</Filter>
     </ClInclude>
     <ClInclude Include="PlainPacketHook.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="RecvHook.h">
+      <Filter>헤더 파일\Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="SendHook.h">
+      <Filter>헤더 파일\Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryScanner.h">
+      <Filter>헤더 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Packets.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,23 +65,23 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SendHook.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryScanner.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="ChatHook.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="RecvHook.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Hook</Filter>
     </ClCompile>
     <ClCompile Include="PlainPacketHook.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Hook</Filter>
+    </ClCompile>
+    <ClCompile Include="RecvHook.cpp">
+      <Filter>소스 파일\Hook</Filter>
+    </ClCompile>
+    <ClCompile Include="SendHook.cpp">
+      <Filter>소스 파일\Hook</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryScanner.cpp">
+      <Filter>소스 파일\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Packets.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
