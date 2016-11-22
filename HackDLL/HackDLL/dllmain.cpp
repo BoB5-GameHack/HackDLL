@@ -7,6 +7,7 @@
 
 #include "PlainPacketHook.h"
 
+// extern variable - used by "PlayMacro" function
 HWND GameWindow = NULL;
 
 BOOL APIENTRY DllMain (HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
@@ -15,11 +16,11 @@ BOOL APIENTRY DllMain (HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReser
 		MessageBoxW(NULL, L"Attached", L"HackDLL", MB_OK);
 		CreateConsoleIO();
 
-		PatchSend();
-		PatchRecv();
+		PatchSend(); //WS2_32.send
+		PatchRecv(); //WSOCK32.recv
 
-		GameWindow = GameWindowsInfo();
-		HookPlainPacket();
+		GameWindow = GameWindowsInfo(); //"EnumWindows" to get Main game window
+		HookPlainPacket(); // VEH handling to hook functions
 		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:

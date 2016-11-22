@@ -7,10 +7,15 @@
 
 char filename[1024] = { 0, };
 
+///////////////////////////////////////////////////////////////////////////////
+// Routine from generating chat function
+
 int ChatHook(unsigned char *packet) {
 	WCHAR* ptr = wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), '<');
 	*ptr = NULL;
 
+	// stop macro
+	// extern variable "isPlaying" in Packets.h
 	if (isPlaying) {
 		if (wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), 'm')) {
 			printf("[*] stopping macro\n");
@@ -23,6 +28,7 @@ int ChatHook(unsigned char *packet) {
 			PacketReplacer(packet, &tmp);
 		}
 	}
+	// start macro
 	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"macro ")) {
 		WCHAR *ptrb = wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), ' ');
 		sprintf(filename, "%ls", ptrb + 1);
@@ -38,6 +44,8 @@ int ChatHook(unsigned char *packet) {
 
 		*ptr = '<';
 	}
+	// replace packet
+	// extern variable "isHooked" in Packets.h
 	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"packets ")) {
 		WCHAR *ptrb = wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), ' ');
 		sprintf(filename, "%ls", ptrb + 1);
@@ -49,6 +57,7 @@ int ChatHook(unsigned char *packet) {
 
 		*ptr = '<';
 	}
+	// modify chat with replacing such entity code
 	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"modify_chat ")) {
 		WCHAR *ptrb = wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), ' ');
 		SIZE_T origlen = wcslen((WCHAR *)(packet + CHAT_DATA_INDEX));

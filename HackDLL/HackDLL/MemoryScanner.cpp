@@ -3,6 +3,9 @@
 #include "stdafx.h"
 #include "MemoryScanner.h"
 
+///////////////////////////////////////////////////////////////////////////////
+// Find such instructions' address
+
 int MemoryScan(BYTE *pattern, SIZE_T length, std::vector<LPVOID>& list) {
 	SYSTEM_INFO sysinfo;
 	GetSystemInfo(&sysinfo);

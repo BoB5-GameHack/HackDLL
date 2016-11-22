@@ -8,6 +8,9 @@ BYTE sendJmper[5] = { 0xE9, };
 
 int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags);
 
+///////////////////////////////////////////////////////////////////////////////
+// Hook WS2_32.send
+
 int PatchSend() {
 	HMODULE hMod = LoadLibraryW(L"WS2_32.dll");
 	addrSend = GetProcAddress(hMod, "send");

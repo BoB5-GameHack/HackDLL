@@ -11,6 +11,9 @@ bool isPlaying = false;
 DWORD64 PacketSendNumber = 0;
 DWORD64 PacketRecvNumber = 0;
 
+///////////////////////////////////////////////////////////////////////////////
+// Print packets in hex at the allocated console
+
 int PacketDumper(unsigned char *packetAddr, SIZE_T size, bool flag) {
 	if (flag) {
 		printf("[%d] plain send : ", ++PacketSendNumber);
@@ -35,6 +38,8 @@ int PacketDumper(unsigned char *packetAddr, SIZE_T size, bool flag) {
 	return 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Replacing packets from the data file
 
 BYTE **packets;
 int curSet = 0;
@@ -128,6 +133,9 @@ int EntityReplacer(WCHAR *str, WCHAR *target, WCHAR chr, int len) {
 
 	return len;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Thread function, It send keyboard message to game window (extern variable at HackDLL.h)
 
 int PlayMacro(int *miliSeconds) {
 	int ms = *miliSeconds;

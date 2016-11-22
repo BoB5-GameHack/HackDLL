@@ -17,7 +17,11 @@ LPVOID lpDecryptFunctionAddr = NULL;
 LPVOID lpMakePacketFunctionAddr = NULL;
 LPVOID lpMakeChatFunctionAddr = NULL;
 
+///////////////////////////////////////////////////////////////////////////////
+// Hook functions using veh handler
+
 int WINAPI HookPlainPacket() {
+	// function encrypt packets (within WS2_32.send)
 	std::vector<LPVOID> list;
 	BYTE pattern[] = { 0x40, 0x53, 0x41, 0x54, 0x48, 0x83, 0xEC, 0x48, 0x4C, 0x8D, 0x49, 0x04 };
 	MemoryScan(pattern, sizeof(pattern), list);
@@ -25,6 +29,7 @@ int WINAPI HookPlainPacket() {
 	lpEncryptFunctionAddr = (LPVOID)((SIZE_T)list.front() + 4);
 	printf("[*] Encryption : %p\n", lpEncryptFunctionAddr);
 
+	// function decrypt packets (within WSOCK32.recv)
 	list.clear();
 	BYTE pattern2[] = { 0x0f, 0x8d, 0x03, 0xff, 0xff, 0xff, 0x48, 0x8b, 0x5c, 0x24, 0x30, 0x48, 0x8b, 0x6c, 0x24, 0x38, 0x48, 0x8b, 0x74, 0x24, 0x40, 0x48, 0x83, 0xc4, 0x20 };
 	MemoryScan(pattern2, sizeof(pattern2), list);
@@ -32,6 +37,7 @@ int WINAPI HookPlainPacket() {
 	lpDecryptFunctionAddr = (LPVOID)((SIZE_T)list.front() + 21);
 	printf("[*] Decrypt : %p\n", lpDecryptFunctionAddr);
 
+	// function generate packets
 	list.clear();
 	BYTE pattern3[] = { 0x48, 0x8B, 0x74, 0x24, 0x50, 0x48, 0x8B, 0xC5, 0x48, 0x8B, 0x6C, 0x24, 0x48, 0x48, 0x83, 0xC4, 0x30, 0x5F, 0xC3, 0xCC };
 	MemoryScan(pattern3, sizeof(pattern3), list);
@@ -39,6 +45,7 @@ int WINAPI HookPlainPacket() {
 	lpMakePacketFunctionAddr = (LPVOID)((SIZE_T)list.at(3) + 5);
 	printf("[*] Packet : %p\n", lpMakePacketFunctionAddr);
 
+	// function generate chat data
 	list.clear();
 	BYTE pattern4[] = { 0xe8, 0x78, 0x7d, 0xd7, 0xff, 0x48, 0x8b, 0x5c, 0x24, 0x30, 0x48, 0x8b, 0x6c, 0x24, 0x38, 0x48, 0x8b, 0xc6, 0x48, 0x8b, 0x74, 0x24, 0x40, 0x48, 0x83, 0xc4, 0x20, 0x5f, 0xc3 };
 	MemoryScan(pattern4, sizeof(pattern4), list);
@@ -46,10 +53,12 @@ int WINAPI HookPlainPacket() {
 	lpMakeChatFunctionAddr = (LPVOID)((SIZE_T)list.front() + 23);
 	printf("[*] Chat : %p\n", lpMakeChatFunctionAddr);
 
+	// (debug) save addresses in "DR_Registers.txt" 
 	FILE *fp = fopen("DR_Registers.txt", "wt");
 	fprintf(fp, "%p %p %p %p\n", lpEncryptFunctionAddr, lpDecryptFunctionAddr, lpMakeChatFunctionAddr, lpMakePacketFunctionAddr);
 	fclose(fp);
 
+	// Set VEH Handler and Main thread context
 	if (AddVectoredExceptionHandler(1, (PVECTORED_EXCEPTION_HANDLER)HookingHandler) == NULL) {
 		printf("[*] HookPlainText : Couldn't add vectored exception handler..\n");
 		return 1;
@@ -73,6 +82,9 @@ int WINAPI HookPlainPacket() {
 
 	return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// VEH Handler : Hook such functions through dr registers and veh handler
 
 long WINAPI HookingHandler(PEXCEPTION_POINTERS ExceptionInfo) {
 	PEXCEPTION_RECORD pExceptionRecord = ExceptionInfo->ExceptionRecord;
@@ -102,6 +114,7 @@ long WINAPI HookingHandler(PEXCEPTION_POINTERS ExceptionInfo) {
 		pContext->Rip = (DWORD64)lpMakePacketFunctionAddr + 3;
 		pContext->Rax = pContext->Rbp;
 
+		//extern variable "isHooked" in Packets.h
 		if (isHooked) {
 			PacketReplacer(*(unsigned char **)pContext->Rbp, (int *)&pContext->R8);
 		}

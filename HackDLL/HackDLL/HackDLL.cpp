@@ -6,12 +6,18 @@
 #include "SendHook.h"
 #include "RecvHook.h"
 
+///////////////////////////////////////////////////////////////////////////////
+// Allocate console to the dll
+
 int CreateConsoleIO() {
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);
 
 	return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Get the oldest thread (it should be a main thread)
 
 #define MAKEULONGLONG(ldw, hdw) ((ULONGLONG(hdw) << 32) | ((ldw) & 0xFFFFFFFF))
 DWORD GetMainThreadId() {
@@ -49,6 +55,9 @@ DWORD GetMainThreadId() {
 	CloseHandle(hSnapshot);
 	return dwMainThreadID;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Get window, name contains "S1 Game"
 
 BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
 	int length = GetWindowTextLengthW(hWnd);

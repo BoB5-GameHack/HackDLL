@@ -9,6 +9,9 @@ BYTE recvJmper[5] = { 0xE9, };
 
 int WINAPI RecvHook(SOCKET s, const char *buf, int len, int flags);
 
+///////////////////////////////////////////////////////////////////////////////
+// Hook WSOCK32.recv
+
 int PatchRecv() {
 	HMODULE hMod = LoadLibraryW(L"WSOCK32.dll");
 	addrRecv = GetProcAddress(hMod, "recv");
