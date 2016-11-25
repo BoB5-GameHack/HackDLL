@@ -6,31 +6,36 @@
 
 char filename[1024] = { 0, };
 
+
 int ChatHook(unsigned char *packet) {
 	WCHAR* ptr = wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), '<');
 	*ptr = NULL;
 
-	if (isPlaying) {
+	if (isMacroOn) {
 		if (wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), 'm')) {
-			isPlaying = false;
+			isMacroOn = false;
 			*ptr = '<';
 		}
 		else {
 			int tmp = 0;
-			PacketReplacer(packet, &tmp);
+			UnitPacketReplacer(packet, &tmp);
+			//PacketReplacer(packet, &tmp);
 		}
 	}
 	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"macro ")) {
 		WCHAR *ptrb = wcschr((WCHAR *)(packet + CHAT_DATA_INDEX), ' ');
-		sprintf(filename, "%ls", ptrb + 1);
-
+		//sprintf(filename, "%ls", ptrb + 1);
+		printf("[ Macro Starts ]\n");
+		isMacroOn = TRUE;
+		CreateRemoteThread(GetCurrentProcess(), NULL, 0, (LPTHREAD_START_ROUTINE)PlayMacro, NULL, 0, NULL);
+		/*
 		if (!access(filename, 0)) {
 			printf("[*] starting macro : %s\n", filename);
 
-			isPlaying = true;
+			isMacroOn = TRUE;
 			CreateRemoteThread(GetCurrentProcess(), NULL, 0, (LPTHREAD_START_ROUTINE)PlayMacro, NULL, 0, NULL);
 		}
-
+		*/
 		*ptr = '<';
 	}
 	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"packets ")) {
@@ -64,6 +69,13 @@ int ChatHook(unsigned char *packet) {
 		*chat = *packet - origlen * 2 + newlen * 2;
 
 		memcpy(packet, chat, *chat);
+	}
+	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"stop loc info")){	//Stop Capturing Monster Location Info
+		isGettingLoc = FALSE;
+	}
+	else if (wcsstr((WCHAR *)(packet + CHAT_DATA_INDEX), L"start loc info")) {
+		isGettingLoc = TRUE;
+
 	}
 	else {
 		*ptr = '<';

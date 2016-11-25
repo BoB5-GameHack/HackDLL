@@ -28,6 +28,8 @@ typedef int (WINAPI *pSend)(
 	);
 
 int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
+	
+	/*
 	if (isPlainSendPacket) {
 		printf("[*] WS2_32.send : ");
 		for (int i = 0; i < len; ++i) {
@@ -38,7 +40,7 @@ int WINAPI SendHook(SOCKET s, const char *buf, int len, int flags) {
 	else {
 		printf("[*] sended\n\n");
 	}
-
+	*/
 	BYTE code[] = { 0x48, 0x89, 0x5C, 0x24, 0x08 };
 	WriteMemory(addrSend, code, sizeof(code));
 	
